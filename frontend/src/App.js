@@ -1,26 +1,16 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState, useEffect } from "react";
+import { getHello } from "./api/hello";
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+  const [value, setValue] = useState([]);
+
+  useEffect(() => {
+    getHello().then((res) => {
+      setValue(res.data.Hello);
+    });
+  }, []);
+
+  return <div>{value} 롸롸롸롸롸롸롸ㅘ</div>;
 }
 
 export default App;

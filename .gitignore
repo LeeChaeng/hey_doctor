@@ -1,0 +1,5 @@
+/backend/node_modules
+/frontend/node_modules
+
+/backend/NHIS_OPEN_GJ_2018.csv
+/backend/NHC.csv
