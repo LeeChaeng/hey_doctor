@@ -33,17 +33,16 @@ app.get("/getDT", (req, res) => {
   fs.createReadStream("NHC.csv")
     .pipe(csv())
     .on("data", (row) => {
-      // list.push(row);
-      // console.log(row["이완기혈압"]);
       let temp = {
-        수축기혈압: row["수축기혈압"],
         이완기혈압: row["이완기혈압"],
+        수축기혈압: row["수축기혈압"],
       };
       list.push(temp);
 
       let cal_temp = [];
-      cal_temp.push(Number(row["이완기혈압"]));
+
       cal_temp.push(Number(row["수축기혈압"]));
+      cal_temp.push(Number(row["이완기혈압"]));
 
       cal_l.push(cal_temp);
     })
@@ -52,8 +51,6 @@ app.get("/getDT", (req, res) => {
 
       let kmeans = new clustering.KMEANS();
       let clusters = kmeans.run(cal_l, 3);
-      console.log(cal_l);
-      console.log(clusters);
 
       let resultData = [];
 
@@ -65,6 +62,8 @@ app.get("/getDT", (req, res) => {
         resultData.push(result);
       }
       console.log(resultData);
+      list = [];
+      cal_l = [];
 
       return res.json(resultData);
     });

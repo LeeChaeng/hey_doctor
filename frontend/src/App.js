@@ -1,16 +1,15 @@
 import React, { useState, useEffect } from "react";
-import { getHello } from "./api/hello";
 import {} from "apexcharts";
 import RChart from "./components/Chart";
 
 function App() {
   const [value, setValue] = useState([]);
 
-  useEffect(() => {
-    getHello().then((res) => {
-      setValue(res.data.Hello);
-    });
-  }, []);
+  // useEffect(() => {
+  //   getHello().then((res) => {
+  //     setValue(res.data.Hello);
+  //   });
+  // }, []);
 
   return (
     <div>

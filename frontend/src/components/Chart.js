@@ -2,89 +2,69 @@ import React, { Component } from "react";
 import ReactApexChart from "react-apexcharts";
 import { getHello } from "../api/hello";
 
+import axios from "axios";
+
 class Rchart extends Component {
-  constructor(props) {
-    super(props);
+  state = {
+    series: [],
+    options: {
+      chart: {
+        height: 200,
+        type: "scatter",
+        zoom: {
+          enabled: true,
+          type: "xy",
+        },
+      },
+      xaxis: {
+        tickAmount: 10,
+        labels: {
+          formatter: function (val) {
+            return parseFloat(val).toFixed(1);
+          },
+        },
+      },
+      yaxis: {
+        tickAmount: 10,
+      },
+    },
+  };
 
-    // getHello().then((res) => {
-    //   console.log("hello임 ");
-    //   console.log(res.data.Hello);
-    // });
+  getData = async () => {
+    const res = await axios.get("http://localhost:4000/getDT");
+    console.log(res.data);
 
-    this.state = {
+    this.setState({
       series: [
         {
           name: "Group A",
-          data: [
-            [89, 151],
-            [89, 151],
-          ],
+          data: res.data[0],
         },
         {
           name: "Group B",
-          data: [
-            [83, 136],
-            [91, 141],
-            [87, 142],
-            [88, 144],
-            [83, 136],
-            [91, 141],
-            [87, 142],
-            [88, 144],
-          ],
+          data: res.data[1],
         },
         {
           name: "Group C",
-          data: [
-            [60, 110],
-            [78, 128],
-            [65, 128],
-            [62, 114],
-            [93, 119],
-            [71, 137],
-            [70, 110],
-            [60, 110],
-            [78, 128],
-            [65, 128],
-            [62, 114],
-            [93, 119],
-            [71, 137],
-            [70, 110],
-          ],
+          data: res.data[2],
         },
       ],
-      options: {
-        chart: {
-          height: 200,
-          type: "scatter",
-          zoom: {
-            enabled: true,
-            type: "xy",
-          },
-        },
-        xaxis: {
-          tickAmount: 10,
-          labels: {
-            formatter: function (val) {
-              return parseFloat(val).toFixed(1);
-            },
-          },
-        },
-        yaxis: {
-          tickAmount: 10,
-        },
-      },
-    };
+    });
+  };
+
+  componentDidMount() {
+    this.getData();
   }
 
   render() {
+    const { series, options } = this.state;
     return (
       <div className="chart">
         <div className="row">
           <div className="mixed-chart">
             <ReactApexChart
-              options={this.state.options}
-              series={this.state.series}
+              options={options}
+              series={series}
               type="scatter"
               height={350}
             />
