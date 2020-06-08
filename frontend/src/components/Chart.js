@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import ReactApexChart from "react-apexcharts";
-import { getHello } from "../api/hello";
 
 import axios from "axios";
 
