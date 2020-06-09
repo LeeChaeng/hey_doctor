@@ -6,6 +6,7 @@ import axios from "axios";
 class Rchart extends Component {
   state = {
     series: [],
+    series2: [],
     options: {
       chart: {
         height: 200,
@@ -37,15 +38,29 @@ class Rchart extends Component {
       series: [
         {
           name: "Group A",
-          data: res.data[0],
+          data: res.data[0][0],
         },
         {
           name: "Group B",
-          data: res.data[1],
+          data: res.data[0][1],
         },
         {
           name: "Group C",
-          data: res.data[2],
+          data: res.data[0][2],
+        },
+      ],
+      series2: [
+        {
+          name: "Group A",
+          data: res.data[1][0],
+        },
+        {
+          name: "Group B",
+          data: res.data[1][1],
+        },
+        {
+          name: "Group C",
+          data: res.data[1][2],
         },
       ],
     });
@@ -56,7 +71,7 @@ class Rchart extends Component {
   }
 
   render() {
-    const { series, options } = this.state;
+    const { series, options, series2 } = this.state;
     return (
       <div className="chart">
         <div className="row">
@@ -71,7 +86,7 @@ class Rchart extends Component {
             <div className="title">몸무게 + 연령(혈압 group)</div>
             <ReactApexChart
               options={options}
-              series={series}
+              series={series2}
               type="scatter"
               height={350}
             />

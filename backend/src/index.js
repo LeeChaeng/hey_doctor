@@ -34,30 +34,48 @@ app.get("/getDBDT", (req, res) => {
   connection.query("select * from nhc", (err, rows) => {
     if (err) throw err;
     let p_learn = [];
+    let b_age = []; //bmi + age 값
 
     for (let i = 0; i < rows.length; i++) {
       let p_learn_temp = [];
+      let b_age_temp = [];
 
       p_learn_temp.push(rows[i]["bp_high"]);
       p_learn_temp.push(rows[i]["bp_lwst"]);
       p_learn.push(p_learn_temp);
+
+      b_age_temp.push(rows[i]["bmi"]);
+      b_age_temp.push(rows[i]["age_group"]);
+      b_age.push(b_age_temp);
     }
 
     let kmeans = new clustering.KMEANS();
     let clusters = kmeans.run(p_learn, 3);
 
-    let resultData = [];
+    //0 - 혈압 그룹군 ABC
+    //1 - 혈압과 몸무게 그룹군 ABC
+    let total_data = [];
+
+    let resultData = []; // 0 혈압 그룹군
+    let b_age_data = []; // 1 혈압 + (몸무게 + age) 그룹군
 
     for (let i = 0; i < clusters.length; i++) {
       let result = [];
+      let result_2 = [];
       for (let j = 0; j < clusters[i].length; j++) {
         result.push(p_learn[clusters[i][j]]);
+        result_2.push(b_age[clusters[i][j]]);
       }
       resultData.push(result);
+      b_age_data.push(result_2);
     }
     p_learn = [];
+    b_age = [];
+    total_data.push(resultData);
+    total_data.push(b_age_data);
+    console.log(total_data);
 
-    return res.json(resultData);
+    return res.json(total_data);
   });
 });
 
