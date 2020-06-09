@@ -30,7 +30,7 @@ class Rchart extends Component {
   };
 
   getData = async () => {
-    const res = await axios.get("http://localhost:4000/getDT");
+    const res = await axios.get("http://localhost:4000/getDBDT");
     console.log(res.data);
 
     this.setState({
@@ -61,6 +61,14 @@ class Rchart extends Component {
       <div className="chart">
         <div className="row">
           <div className="mixed-chart">
+            <div className="title">수축기혈압 vs 이완기혈압</div>
+            <ReactApexChart
+              options={options}
+              series={series}
+              type="scatter"
+              height={350}
+            />
+            <div className="title">몸무게 + 연령(혈압 group)</div>
             <ReactApexChart
               options={options}
               series={series}

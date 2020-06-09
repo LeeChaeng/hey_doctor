@@ -30,44 +30,35 @@ app.get("/", (req, res) => {
 let list = [];
 let cal_l = [];
 
-app.get("/getDT", (req, res) => {
-  fs.createReadStream("NHC.csv")
-    .pipe(csv())
-    .on("data", (row) => {
-      let temp = {
-        이완기혈압: row["이완기혈압"],
-        수축기혈압: row["수축기혈압"],
-      };
-      list.push(temp);
+app.get("/getDBDT", (req, res) => {
+  connection.query("select * from nhc", (err, rows) => {
+    if (err) throw err;
+    let p_learn = [];
 
-      let cal_temp = [];
-      if (Number(row["수축기혈압"]) != 0) {
-        cal_temp.push(Number(row["수축기혈압"]));
-        cal_temp.push(Number(row["이완기혈압"]));
-        cal_l.push(cal_temp);
+    for (let i = 0; i < rows.length; i++) {
+      let p_learn_temp = [];
+
+      p_learn_temp.push(rows[i]["bp_high"]);
+      p_learn_temp.push(rows[i]["bp_lwst"]);
+      p_learn.push(p_learn_temp);
+    }
+
+    let kmeans = new clustering.KMEANS();
+    let clusters = kmeans.run(p_learn, 3);
+
+    let resultData = [];
+
+    for (let i = 0; i < clusters.length; i++) {
+      let result = [];
+      for (let j = 0; j < clusters[i].length; j++) {
+        result.push(p_learn[clusters[i][j]]);
       }
-    })
-    .on("end", () => {
-      console.log("CSV file successfully processed");
+      resultData.push(result);
+    }
+    p_learn = [];
 
-      let kmeans = new clustering.KMEANS();
-      let clusters = kmeans.run(cal_l, 3);
-
-      let resultData = [];
-
-      for (let i = 0; i < clusters.length; i++) {
-        let result = [];
-        for (let j = 0; j < clusters[i].length; j++) {
-          result.push(cal_l[clusters[i][j]]);
-        }
-        resultData.push(result);
-      }
-      console.log(resultData);
-      list = [];
-      cal_l = [];
-
-      return res.json(resultData);
-    });
+    return res.json(resultData);
+  });
 });
 
 const start_s = () => {
@@ -93,6 +84,9 @@ const start_s = () => {
       connection.query(sql, value, (err, rows, result) => {
         if (err) throw err;
       });
+    })
+    .on("end", () => {
+      console.log("upload Data completed!");
     });
 };
 
