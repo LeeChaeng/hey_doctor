@@ -33,12 +33,14 @@ let cal_l = [];
 app.get("/getDBDT", (req, res) => {
   connection.query("select * from nhc", (err, rows) => {
     if (err) throw err;
-    let p_learn = [];
+    let p_learn = []; //혈압 군
     let b_age = []; //bmi + age 값
+    let blood_s = []; //혈당 값 + 혈압 군
 
     for (let i = 0; i < rows.length; i++) {
       let p_learn_temp = [];
       let b_age_temp = [];
+      let blood_s_temp = [];
 
       p_learn_temp.push(rows[i]["bp_high"]);
       p_learn_temp.push(rows[i]["bp_lwst"]);
@@ -47,6 +49,10 @@ app.get("/getDBDT", (req, res) => {
       b_age_temp.push(rows[i]["bmi"]);
       b_age_temp.push(rows[i]["age_group"]);
       b_age.push(b_age_temp);
+
+      blood_s_temp.push(rows[i]["blds"]);
+      blood_s_temp.push(1);
+      blood_s.push(blood_s_temp);
     }
 
     let kmeans = new clustering.KMEANS();
@@ -58,22 +64,28 @@ app.get("/getDBDT", (req, res) => {
 
     let resultData = []; // 0 혈압 그룹군
     let b_age_data = []; // 1 혈압 + (몸무게 + age) 그룹군
+    let blood_s_data = []; // 2 혈압그룹군 + 혈당
 
     for (let i = 0; i < clusters.length; i++) {
       let result = [];
       let result_2 = [];
+      let result_3 = [];
       for (let j = 0; j < clusters[i].length; j++) {
         result.push(p_learn[clusters[i][j]]);
         result_2.push(b_age[clusters[i][j]]);
+        result_3.push(blood_s[clusters[i][j]]);
       }
       resultData.push(result);
       b_age_data.push(result_2);
+      blood_s_data.push(result_3);
     }
     p_learn = [];
     b_age = [];
+    blood_s = [];
+
     total_data.push(resultData);
     total_data.push(b_age_data);
-    console.log(total_data);
+    total_data.push(blood_s_data);
 
     return res.json(total_data);
   });

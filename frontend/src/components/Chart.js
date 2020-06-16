@@ -7,6 +7,7 @@ class Rchart extends Component {
   state = {
     series: [],
     series2: [],
+    series3: [],
     options: {
       chart: {
         height: 200,
@@ -63,6 +64,20 @@ class Rchart extends Component {
           data: res.data[1][2],
         },
       ],
+      series3: [
+        {
+          name: "Group A",
+          data: res.data[2][0],
+        },
+        {
+          name: "Group B",
+          data: res.data[2][1],
+        },
+        {
+          name: "Group C",
+          data: res.data[2][2],
+        },
+      ],
     });
   };
 
@@ -71,7 +86,7 @@ class Rchart extends Component {
   }
 
   render() {
-    const { series, options, series2 } = this.state;
+    const { series, options, series2, series3 } = this.state;
     return (
       <div className="chart">
         <div className="row">
@@ -83,10 +98,17 @@ class Rchart extends Component {
               type="scatter"
               height={350}
             />
-            <div className="title">몸무게 + 연령(혈압 group)</div>
+            <div className="title">몸무게 + 연령(혈압 group의 양상)</div>
             <ReactApexChart
               options={options}
               series={series2}
+              type="scatter"
+              height={350}
+            />
+            <div className="title">혈당(혈압 그룹)</div>
+            <ReactApexChart
+              options={options}
+              series={series3}
               type="scatter"
               height={350}
             />
