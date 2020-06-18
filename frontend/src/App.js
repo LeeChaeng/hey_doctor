@@ -1,14 +1,13 @@
 import React from "react";
-import {} from "apexcharts";
 import { HashRouter, Route, BrowserRouter } from "react-router-dom";
 import Home from "./routes/Home";
-import Test from "./routes/Test";
+import Main from "./routes/Main";
 
 function App() {
   return (
     <HashRouter>
+      <Route path="/" exact={true} component={Main} />
       <Route path="/home" component={Home} />
-      <Route path="/test" component={Test} />
     </HashRouter>
   );
 }
