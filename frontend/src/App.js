@@ -1,12 +1,15 @@
 import React from "react";
 import {} from "apexcharts";
-import RChart from "./components/Chart";
+import { HashRouter, Route, BrowserRouter } from "react-router-dom";
+import Home from "./routes/Home";
+import Test from "./routes/Test";
 
 function App() {
   return (
-    <div>
-      <RChart />
-    </div>
+    <HashRouter>
+      <Route path="/home" component={Home} />
+      <Route path="/test" component={Test} />
+    </HashRouter>
   );
 }
 

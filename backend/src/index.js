@@ -27,9 +27,6 @@ app.get("/", (req, res) => {
   return res;
 });
 
-let list = [];
-let cal_l = [];
-
 app.get("/getDBDT", (req, res) => {
   connection.query("select * from nhc", (err, rows) => {
     if (err) throw err;
@@ -92,6 +89,9 @@ app.get("/getDBDT", (req, res) => {
 });
 
 const start_s = () => {
+  connection.query("delete from nhc", (err, result) => {
+    if (err) throw err;
+  });
   let sql =
     "insert into nhc (bp_high, bp_lwst, age_group, bmi, blds, tot_chole, sgot_ast, sgpt_alt) values (?,?,?,?,?,?,?,?)";
 
