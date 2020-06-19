@@ -1,5 +1,6 @@
 import React from "react";
 import styled, { createGlobalStyle } from "styled-components";
+import { Link } from "react-router-dom";
 
 const InputPage = () => {
   return (
@@ -14,9 +15,13 @@ const InputPage = () => {
             defaultValue=""
             placeholder="본인 확인 코드를 입력하세요"
           />
-          <input type="button" className="button" defaultValue="JOIN" />
+          <Link to="/Submit" className="button">
+            <input type="button" className="button" defaultValue="JOIN" />
+          </Link>
         </MainButton>
-        <Text>코드를 잊어버리셨나요?</Text>
+        <Link to="/Find" style={{ textDecoration: "none" }}>
+          <Text>코드를 잊어버리셨나요?</Text>
+        </Link>
       </Total>
     </>
   );
@@ -64,6 +69,7 @@ const MainButton = styled.div`
     font-style: oblique;
     box-sizing: border-box;
     color: black;
+    outline: none;
   }
   .button {
     width: 30%;
