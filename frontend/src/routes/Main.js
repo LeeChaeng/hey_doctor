@@ -15,7 +15,7 @@ const InputPage = () => {
             defaultValue=""
             placeholder="본인 확인 코드를 입력하세요"
           />
-          <Link to="/Submit" className="button">
+          <Link to="/Home" className="button">
             <input type="button" className="button" defaultValue="JOIN" />
           </Link>
         </MainButton>
@@ -34,7 +34,7 @@ const GlobalStyle = createGlobalStyle`
 `;
 
 const Total = styled.div`
-  margin-top: 250px;
+  margin-top: 280px;
 `;
 
 const Title = styled.h1`
