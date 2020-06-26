@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import { Link } from "react-router-dom";
 
 const Input = () => {
   return (
@@ -64,7 +65,9 @@ const Input = () => {
         (혈청지오티)ALT : <Text></Text>
       </Box>
       <Wrap>
-        <Button>확인</Button>
+        <Link to="/Home">
+          <Button>확인</Button>
+        </Link>
       </Wrap>
     </Page>
   );
